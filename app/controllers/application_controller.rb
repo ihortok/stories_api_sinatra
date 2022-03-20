@@ -7,6 +7,10 @@ class ApplicationController < Sinatra::Base
     set :views, 'app/views'
   end
 
+  use Rack::Auth::Basic, 'User Area' do |email, password|
+    !!User.find_by(email: email)&.authenticate(password)
+  end
+
   get "/" do
     erb :welcome
   end
